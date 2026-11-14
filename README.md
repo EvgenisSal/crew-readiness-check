@@ -31,7 +31,7 @@ All crew data are **simulated** (`generate_crew.py`, fixed seed). The rule "+4% 
 - Periklis: Simulated Crew Data and Demo
 - George: Pitch and Submission
 
-## Live Site: 
-https://evgenissal.github.io/crew-readiness-check/selftest.html
+## Live Site  
+https://evgenissal.github.io/crew-readiness-check/
 
 *Decision-support prototype, not a medical device.*
