@@ -24,4 +24,7 @@ then open http://localhost:8000. The pages also work by double-clicking (crew da
 ## Data
 All crew data are **simulated** (`generate_crew.py`, fixed seed). The rule "+4% reaction time per missing hour of sleep below 6 h" is our simplification for the demo, not a published finding.
 
+## Team
+-Periklis: Simulated Crew Data and Demo
+
 *Decision-support prototype, not a medical device.*
