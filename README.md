@@ -25,11 +25,11 @@ then open http://localhost:8000. The pages also work by double-clicking (crew da
 All crew data are **simulated** (`generate_crew.py`, fixed seed). The rule "+4% reaction time per missing hour of sleep below 6 h" is our simplification for the demo, not a published finding.
 
 ## Team
--Evgenios: Science, Threshold and Sources
--Sarantis: Self-Test
--Vasilis: Crew Dashboard
--Periklis: Simulated Crew Data and Demo
--George: Pitch and Submission
+- Evgenios: Science, Threshold and Sources
+- Sarantis: Self-Test
+- Vasilis: Crew Dashboard
+- Periklis: Simulated Crew Data and Demo
+- George: Pitch and Submission
 
 ## Live Site: 
 https://evgenissal.github.io/crew-readiness-check/selftest.html
