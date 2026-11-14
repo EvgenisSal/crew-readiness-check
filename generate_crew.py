@@ -32,17 +32,15 @@ CREW = [
     (2, "Pilot",              244, 64, 98, 36.7, 110, 69),
     (3, "Flight Engineer",    229, 62, 97, 36.5, 114, 72),
     (4, "Flight Engineer",    238, 66, 98, 36.6, 113, 71),
-    (5, "Flight Engineer",    251, 61, 97, 36.8, 109, 68),
-    (6, "Mission Specialist", 223, 68, 98, 36.6, 115, 73),
-    (7, "Mission Specialist", 246, 63, 98, 36.7, 114, 72),
-    (8, "Mission Specialist", 232, 67, 97, 36.5, 111, 70),
-    (9, "Medical Officer",    258, 65, 98, 36.6, 110, 69),
-    (10, "Science Officer",   241, 62, 98, 36.7, 112, 71),
+    (5, "Mission Specialist", 246, 63, 98, 36.7, 114, 72),
 ]
+# Η ομάδα μας ως πλήρωμα (με αυτή τη σειρά)
+NAMES = {1: "Evgenios", 2: "Sarantis", 3: "Vasilis", 4: "Periklis", 5: "George"}
+BP_ASTRONAUT = 5   # George: σενάριο υψηλής πίεσης
 
 # Σκόρπιες 🟡 μέρες για ρεαλισμό (id -> μέρες πτήσης). Σκόπιμα σεναριακές:
 # νύχτα 5.6-5.9 ώρες + lapses = 2. Όλοι οι υπόλοιποι μένουν 🟢.
-SCATTERED_YELLOW = {2: [9, 21], 9: [15]}
+SCATTERED_YELLOW = {2: [9, 21], 3: [15]}
 
 # Τυχαίες "σύντομες" νύχτες (5.6-5.9) μόνο μέχρι αυτή τη μέρα, ώστε το τέλος
 # της πτήσης να είναι καθαρό. Ο αστροναύτης 4 σταματά νωρίτερα (η κόπωσή του
@@ -50,7 +48,7 @@ SCATTERED_YELLOW = {2: [9, 21], 9: [15]}
 LAST_RANDOM_SHORT_NIGHT = 23
 LAST_RANDOM_SHORT_NIGHT_ASTRONAUT_4 = 20
 
-# Σενάριο αστροναύτη 7: σοβαρά αυξημένη πίεση, ενώ το τεστ μένει 🟢
+# Σενάριο George (id 5): σοβαρά αυξημένη πίεση, ενώ το τεστ μένει 🟢
 ASTRONAUT_7_BP = {28: (142, 92), 29: (144, 93), 30: (145, 94)}
 
 
@@ -153,7 +151,7 @@ def build_astronaut(spec):
             # Σταθερά αυξανόμενα lapses (εντός των κανόνων: 2-3 στις +25..+27, 4-6 στις +28..+30),
             # ώστε το demo να δείχνει καθαρή τάση που χειροτερεύει 6 μέρες.
             lapses = {25: 2, 26: 2, 27: 3, 28: 4, 29: 5, 30: 6}[d]
-        if aid == 7 and d in ASTRONAUT_7_BP:
+        if aid == BP_ASTRONAUT and d in ASTRONAUT_7_BP:
             bp_sys, bp_dia = ASTRONAUT_7_BP[d]
 
         days.append({
@@ -176,7 +174,7 @@ def build_astronaut(spec):
         "mean_rt_ms": int(round(sum(x["test"]["mean_rt_ms"] for x in pre) / len(pre))),
         "lapses": int(round(sum(x["test"]["lapses"] for x in pre) / len(pre))),
     }
-    return {"id": aid, "name": f"Astronaut {aid}", "role": role, "baseline": baseline, "days": days}
+    return {"id": aid, "name": NAMES[aid], "role": role, "baseline": baseline, "days": days}
 
 
 def build_crew():
@@ -267,7 +265,7 @@ def run_check(crew):
         if c == "GREEN" and bio_ok(f):
             available.append(a["id"])
 
-    print("\nΑστροναύτης 4 -- χρώματα μέρες +22..+30:")
+    print("\nPeriklis -- χρώματα μέρες +22..+30:")
     print("  " + "  ".join(f"{d:+d}:{EMOJI[colors[4][d]]}" for d in range(22, 31)))
     d4 = [by_day[4][d] for d in range(25, 31)]
     print("  ύπνος:      " + " ".join(f"{x['sleep_h']:.1f}" for x in d4))
@@ -275,52 +273,51 @@ def run_check(crew):
     print("  υπνηλία:    " + " ".join(str(x["sleepiness"]) for x in d4))
     print("  diff%:      " + " ".join(f"{diff_pct(x, ast[4]['baseline']):+.1f}" for x in d4))
 
-    print("\nΑστροναύτης 7 -- πίεση μέρες +27..+30 και χρώμα τεστ:")
+    print("\nGeorge -- πίεση μέρες +27..+30 και χρώμα τεστ:")
     for d in range(27, 31):
-        x = by_day[7][d]
-        print(f"  {d:+d}: {x['bp_sys']}/{x['bp_dia']}  τεστ {EMOJI[colors[7][d]]}")
+        x = by_day[BP_ASTRONAUT][d]
+        print(f"  {d:+d}: {x['bp_sys']}/{x['bp_dia']}  τεστ {EMOJI[colors[BP_ASTRONAUT][d]]}")
 
     scattered = {i: [d for d, c in colors[i].items() if c != "GREEN"] for i in ast if i not in (4,)}
     scattered = {i: v for i, v in scattered.items() if v}
-    print(f"\nΣκόρπιες μη-🟢 μέρες (πλην αστροναύτη 4): {scattered}")
+    print(f"\nΣκόρπιες μη-🟢 μέρες (πλην Periklis): {scattered}")
     print(f"Διαθέσιμοι για EVA (🟢 και όλα τα biometrics ✓): {available}  (σύνολο {len(available)})")
 
     print("\n=== ΕΠΙΒΕΒΑΙΩΣΗ ΣΕΝΑΡΙΩΝ ===")
-    expect("Αστρ. 4: μέρες +25..+27 = 🟡",
+    expect("Periklis: μέρες +25..+27 = 🟡",
            all(colors[4][d] == "YELLOW" for d in (25, 26, 27)))
-    expect("Αστρ. 4: μέρες +28..+30 = 🔴 (άρα και η +30)",
+    expect("Periklis: μέρες +28..+30 = 🔴 (άρα και η +30)",
            all(colors[4][d] == "RED" for d in (28, 29, 30)))
-    expect("Αστρ. 4: ύπνος 5.0-5.5 τις μέρες +25..+30",
+    expect("Periklis: ύπνος 5.0-5.5 τις μέρες +25..+30",
            all(5.0 <= by_day[4][d]["sleep_h"] <= 5.5 for d in range(25, 31)))
-    expect("Αστρ. 4: υπνηλία 2-3 τις μέρες +25..+30 (ασυμφωνία)",
+    expect("Periklis: υπνηλία 2-3 τις μέρες +25..+30 (ασυμφωνία)",
            all(2 <= by_day[4][d]["sleepiness"] <= 3 for d in range(25, 31)))
-    expect("Αστρ. 4: lapses μη φθίνοντα τις μέρες +25..+30 (τάση που χειροτερεύει)",
+    expect("Periklis: lapses μη φθίνοντα τις μέρες +25..+30 (τάση που χειροτερεύει)",
            all(by_day[4][d]["test"]["lapses"] <= by_day[4][d + 1]["test"]["lapses"] for d in range(25, 30)))
-    expect("Αστρ. 4: 🟢 σε όλες τις μέρες πριν την +25",
+    expect("Periklis: 🟢 σε όλες τις μέρες πριν την +25",
            all(colors[4][d] == "GREEN" for d in range(0, 25)))
-    expect("Αστρ. 7: πίεση 142/92..145/94 τις μέρες +28..+30 (σοβαρό ⚠️)",
-           all(142 <= by_day[7][d]["bp_sys"] <= 145 and 92 <= by_day[7][d]["bp_dia"] <= 94
-               and bio_flags(by_day[7][d])["bp"] == "severe" for d in (28, 29, 30)))
-    expect("Αστρ. 7: τεστ 🟢 τις μέρες +28..+30",
-           all(colors[7][d] == "GREEN" for d in (28, 29, 30)))
-    expect("Αστρ. 7: πίεση φυσιολογική (✓) πριν την +28",
-           all(bio_flags(by_day[7][d])["bp"] == "ok" for d in range(0, 28)))
+    expect("George: πίεση 142/92..145/94 τις μέρες +28..+30 (σοβαρό ⚠️)",
+           all(142 <= by_day[BP_ASTRONAUT][d]["bp_sys"] <= 145 and 92 <= by_day[BP_ASTRONAUT][d]["bp_dia"] <= 94
+               and bio_flags(by_day[BP_ASTRONAUT][d])["bp"] == "severe" for d in (28, 29, 30)))
+    expect("George: τεστ 🟢 τις μέρες +28..+30",
+           all(colors[BP_ASTRONAUT][d] == "GREEN" for d in (28, 29, 30)))
+    expect("George: πίεση φυσιολογική (✓) πριν την +28",
+           all(bio_flags(by_day[BP_ASTRONAUT][d])["bp"] == "ok" for d in range(0, 28)))
     others = [i for i in ast if i != 4]
     expect("Όλοι οι άλλοι: 🟢 τη μέρα +30",
            all(colors[i][30] == "GREEN" for i in others))
-    expect("Σκόρπιες 🟡: 1-2 αστροναύτες (εκτός 4), 1-2 μέρες ο καθένας, ποτέ 🔴",
+    expect("Σκόρπιες 🟡: 1-2 αστροναύτες (εκτός Periklis), 1-2 μέρες ο καθένας, ποτέ 🔴",
            1 <= len(scattered) <= 2
            and all(1 <= len(v) <= 2 for v in scattered.values())
            and all(colors[i][d] == "YELLOW" for i, v in scattered.items() for d in v))
     expect("Τουλάχιστον 3 αστροναύτες 🟢 και διαθέσιμοι για EVA τη μέρα +31", len(available) >= 3)
-    expect("Μόνο ο αστρ. 7 έχει ⚠️ στα biometrics τη μέρα +30",
-           [a["id"] for a in crew["astronauts"] if not bio_ok(bio_flags(by_day[a["id"]][30]))] == [7])
+    expect("Μόνο ο George έχει ⚠️ στα biometrics τη μέρα +30",
+           [a["id"] for a in crew["astronauts"] if not bio_ok(bio_flags(by_day[a["id"]][30]))] == [BP_ASTRONAUT])
     expect("131 εγγραφές ανά αστροναύτη (μέρες -100..+30, μία ανά μέρα)",
            all([d["day"] for d in a["days"]] == list(range(-100, 31)) for a in crew["astronauts"]))
     roles = sorted(a["role"] for a in crew["astronauts"])
-    expect("Ρόλοι: 1 Commander, 1 Pilot, 3 Flight Engineer, 3 Mission Specialist, 1 Medical Officer, 1 Science Officer",
-           roles == sorted(["Commander", "Pilot"] + ["Flight Engineer"] * 3 + ["Mission Specialist"] * 3
-                           + ["Medical Officer", "Science Officer"]))
+    expect("Πλήρωμα: Evgenios, Sarantis, Vasilis, Periklis, George (με αυτή τη σειρά)",
+           [a["name"] for a in crew["astronauts"]] == ["Evgenios", "Sarantis", "Vasilis", "Periklis", "George"])
     return failures
 
 
