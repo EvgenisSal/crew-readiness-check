@@ -7,3 +7,5 @@
 - American Heart Association: blood pressure categories. https://heart.org/bplevels
 - Mayo Clinic, NHS England, FDA: pulse oximetry ranges and accuracy
 - MedlinePlus (NIH): body temperature norms. https://medlineplus.gov/ency/article/001982.htm
+
+- Our own design choices (not from literature): the +10% / +20% reaction-time thresholds for YELLOW/RED, and the 3-day escalation rule.
