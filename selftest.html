@@ -310,7 +310,7 @@
       <p><b>Judge or visitor?</b><br><span class="note">Take the test without a personal baseline.</span></p>
       <button class="btn" id="btn-guest">Take the test as a guest</button>
     </div>
-    <label class="switch"><input type="checkbox" id="demo-toggle"><span class="track"></span>Short demo test (45 seconds instead of 3 minutes)</label>
+    <label class="switch"><input type="checkbox" id="demo-toggle"><span class="track"></span>Short demo test (30 seconds instead of 3 minutes)</label>
     <p id="load-error" class="error"></p>
   </section>
 
@@ -669,6 +669,8 @@
     var e = elapsed();
     $("progress-bar").style.width = Math.min(100, e / test.durationMs * 100) + "%";
     $("test-mode").textContent = Math.max(0, Math.ceil((test.durationMs - e) / 1000)) + " s left";
+    // Time is up while waiting for the next counter: end now instead of showing one more.
+    if (e >= test.durationMs && test.phase === "wait") { finishTest(); return; }
     if (test.phase === "stim") {
       var ms = Math.floor(performance.now() - test.stimStart);
       $("stimulus").textContent = String(ms).padStart(3, "0");
