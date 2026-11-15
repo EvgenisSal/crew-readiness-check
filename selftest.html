@@ -444,7 +444,7 @@
   var COLORS = { GREEN: "#22c55e", YELLOW: "#eab308", RED: "#ef4444" };
   var GUIDANCE = {
     GREEN:  { word: "READY", headline: "You are ready for critical tasks.", items: [
-      "You are cleared for critical tasks today.",
+      "Test READY. Final clearance also checks your vital signs on the crew dashboard.",
       "Keep your sleep schedule consistent tonight."] },
     YELLOW: { word: "CAUTION", headline: "Signs of fatigue. Work with a safety net today.", items: [
       "Ask a crewmate to double-check critical steps.",
@@ -527,7 +527,7 @@
         var emb = embedded();
         if (emb) { crew = emb; renderMission(); return; }
         crew = null;
-        $("load-error").textContent = "Crew data did not load. Start the demo with start_demo.command, or run python3 -m http.server in this folder and open localhost:8000/selftest.html. Guest mode works without it.";
+        $("load-error").textContent = "Crew data did not load. Run python3 -m http.server in this folder and open localhost:8000/selftest.html. Guest mode works without it.";
       });
   }
   function renderMission() {
@@ -782,7 +782,7 @@
     var saved = storageSet(key, { mean_rt_ms: r.mean_rt_ms, lapses: r.lapses, false_starts: r.false_starts,
       sleepiness: r.sleepiness, mood: r.mood, timestamp: r.timestamp });
     $("save-note").textContent = saved
-      ? (person.kind === "guest" ? "Result kept on this computer (guest results do not appear on the crew dashboard)." : "Result sent to the crew dashboard.")
+      ? (person.kind === "guest" ? "Result kept on this computer (guest results do not appear on the crew dashboard)." : "Saved on this device. It appears on the crew dashboard in this browser.")
       : "This browser blocked saving, so the dashboard will not update. The result above is still valid.";
 
     $("raw-card").style.display = "none";
