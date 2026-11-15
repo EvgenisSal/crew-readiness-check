@@ -583,7 +583,7 @@
       .catch(function () {
         var emb = embedded();
         if (emb) { raw = emb; build(); render(); return; }
-        $("app").innerHTML = '<div class="error-box"><b>Crew data did not load.</b><br>Start the demo with start_demo.command, or run <code>python3 -m http.server 8000</code> in this folder and open <code>localhost:8000/dashboard.html</code>. The file crew.json must be in the same folder.</div>';
+        $("app").innerHTML = '<div class="error-box"><b>Crew data did not load.</b><br>Run <code>python3 -m http.server 8000</code> in this folder and open <code>localhost:8000/dashboard.html</code>. The file crew.json must be in the same folder.</div>';
       });
   }
   function refresh() { if (raw) { build(); render(); } }
