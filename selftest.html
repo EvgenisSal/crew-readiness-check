@@ -780,7 +780,7 @@
 
     var key = "selftest_" + (person.kind === "guest" ? "guest" : person.id);
     var saved = storageSet(key, { mean_rt_ms: r.mean_rt_ms, lapses: r.lapses, false_starts: r.false_starts,
-      sleepiness: r.sleepiness, mood: r.mood, timestamp: r.timestamp });
+      sleepiness: r.sleepiness, mood: r.mood, timestamp: r.timestamp, short: test.durationMs < FULL_SEC * 1000 });
     $("save-note").textContent = saved
       ? (person.kind === "guest" ? "Result kept on this computer (guest results do not appear on the crew dashboard)." : "Saved on this device. It appears on the crew dashboard in this browser.")
       : "This browser blocked saving, so the dashboard will not update. The result above is still valid.";
