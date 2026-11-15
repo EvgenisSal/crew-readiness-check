@@ -403,7 +403,7 @@
       : "From the latest scheduled check, day " + raw.mission.current_day;
 
     var alerts = "";
-    if (x.mismatch) alerts += alert("mismatch", ICON_WARN, "Reports feeling fine, but sleep and test data show fatigue.");
+    if (x.mismatch) alerts += alert("mismatch", ICON_WARN, "Reports feeling fine, but the reaction test shows fatigue.");
     if (x.predict) alerts += alert("predict", ICON_MOON, "Three short nights in a row: likely NOT READY tomorrow without more sleep.");
     if (x.red3) alerts += alert("surgeon", ICON_EARTH, "Report to flight surgeons at next comm window: NOT READY for 3 days.");
     x.bio3.forEach(function (k) {
