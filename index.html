@@ -369,6 +369,7 @@
         'style="--c:' + c + ';--glow:' + c + '66" aria-label="' + esc(x.a.name + ", " + WORD[x.color]) + '">' +
         '<div class="row1"><span class="num">' + x.a.id + '</span><span class="lamp"></span></div>' +
         '<div class="pname">' + esc(x.a.name) + '</div><div class="role">' + esc(x.a.role) + '</div>' +
+                '<div class="slept' + (x.today.sleep_h < 6 ? ' short' : '') + '">☾ ' + fmtSleep(x.today.sleep_h) + ' slept</div>' +
         '<div class="flags">' + (x.live ? '<span class="tag live">LIVE</span>' : '') +
         (x.bioIssue.length ? '<span class="tag bio' + (high ? " high" : "") + '">⚠ ' + esc(BIO_SHORT[x.bioIssue[0]]) + '</span>' : '') + '</div>' +
         '<div class="word">' + WORD[x.color] + '</div></button>';
