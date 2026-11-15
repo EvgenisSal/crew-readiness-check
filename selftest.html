@@ -768,7 +768,7 @@
 
     var alerts = $("alerts"); alerts.innerHTML = "";
     if (r.sleepiness <= 3 && (c.color === "YELLOW" || c.color === "RED"))
-      addAlert("mismatch", ICON_WARN, "You report feeling fine, but your sleep and test data show fatigue.");
+      addAlert("mismatch", ICON_WARN, "You report feeling fine, but your reaction test shows fatigue.");
     if (person.kind === "astronaut" && person.last3 && person.last3.every(function (h) { return h != null && h < 6; }))
       addAlert("predict", ICON_MOON, "Three short nights in a row: likely NOT READY tomorrow without more sleep.");
     if (person.kind === "guest" && person.baselineIsFallback)
