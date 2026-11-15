@@ -408,7 +408,17 @@
       alerts += alert("surgeon", ICON_EARTH, "Report to flight surgeons at next comm window: " + BIO_NAME[k].toLowerCase().replace(/^./, function (s) { return s.toUpperCase(); }) + " " + lvl.toLowerCase() + " for 3 days.");
     });
 
-    var guide = GUIDANCE[x.color].map(function (g) { return "<li>" + esc(g) + "</li>"; }).join("");
+    // Green reaction test but a vital sign outside the normal range: the readiness color
+    // stays green (vitals never change it), but the person is NOT cleared, so say that.
+    var vitalsHold = x.color === "GREEN" && x.bioIssue.length > 0;
+    var flagged = x.bioIssue.map(function (k) { return BIO_NAME[k] + " (" + BIO_LABEL[k][t._bio[k]].toLowerCase() + ")"; });
+    var many = flagged.length > 1;
+    var guideItems = vitalsHold ? [
+      "Reaction test is fine, but " + (many ? "vital signs are" : "a vital sign is") + " outside the normal range: " + flagged.join(", ") + ".",
+      "Not cleared for critical tasks until " + (many ? "they are" : "it is") + " rechecked and reviewed.",
+      "Report to flight surgeons at the next comm window if " + (many ? "they persist." : "it persists.")
+    ] : GUIDANCE[x.color];
+    var guide = guideItems.map(function (g) { return "<li>" + esc(g) + "</li>"; }).join("");
 
     var h = '<div class="detail" style="--c:' + c + ';--glow:' + c + '55">';
     // Left: verdict
@@ -416,7 +426,8 @@
       '<div class="ring"><span>' + WORD[x.color] + '</span></div>' +
       '<div><div class="who-name">' + esc(x.a.name) + '</div><div class="who-role">' + esc(x.a.role) + '</div>' +
       '<div class="source">' + source + '</div>' +
-      '<div class="escalation" style="color:' + c + '">' + esc(ESCALATION[x.color]) + '</div></div></div>' +
+      '<div class="escalation" style="color:' + (vitalsHold ? COLORS.YELLOW : c) + '">' +
+        esc(vitalsHold ? "Test ready, but " + (many ? "vital signs need" : "a vital sign needs") + " review. Not cleared for critical tasks yet." : ESCALATION[x.color]) + '</div></div></div>' +
       '<div class="figures">' +
         figure(t.test.mean_rt_ms == null ? "n/a" : t.test.mean_rt_ms + " ms", "Reaction time", diffTxt) +
         figure(t.test.lapses, "Lapses", "≥ 355 ms") +
