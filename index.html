@@ -372,7 +372,7 @@
         '<div class="row1"><span class="num">' + x.a.id + '</span><span class="lamp"></span></div>' +
         '<div class="pname">' + esc(x.a.name) + '</div><div class="role">' + esc(x.a.role) + '</div>' +
                 '<div class="slept' + (x.today.sleep_h < 6 ? ' short' : '') + '">☾ ' + fmtSleep(x.today.sleep_h) + ' slept</div>' +
-        '<div class="flags">' + (x.live ? '<span class="tag live">' + (x.live.short ? 'LIVE · 30 s demo' : 'LIVE') + '</span>>' : '') +
+        '<div class="flags">' + (x.live ? '<span class="tag live">' + (x.live.short ? 'LIVE · 30 s demo' : 'LIVE') + '</span>' : '') +
         (x.bioIssue.length ? '<span class="tag bio' + (high ? " high" : "") + '">⚠ ' + esc(BIO_SHORT[x.bioIssue[0]]) + '</span>' : '') + '</div>' +
         '<div class="word">' + WORD[x.color] + '</div></button>';
     });
@@ -399,7 +399,7 @@
     var t = x.today, c = COLORS[x.color];
     var diffTxt = t._diff == null ? "no valid responses" : (Math.round(t._diff) > 0 ? "+" : "") + Math.round(t._diff) + "% vs baseline " + x.a.baseline.mean_rt_ms + " ms";
     var source = x.live
-      ? '<span class="tag live">' + (x.live.short ? 'LIVE · 30 s demo' : 'LIVE') + '</span>>Live result from self-test at ' + timeOf(x.live.timestamp)
+      ? '<span class="tag live">' + (x.live.short ? 'LIVE · 30 s demo' : 'LIVE') + '</span>Live result from self-test at ' + timeOf(x.live.timestamp)
       : "From the latest scheduled check, day " + raw.mission.current_day;
 
     var alerts = "";
